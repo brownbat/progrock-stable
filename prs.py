@@ -814,9 +814,10 @@ def main():
     if torch.cuda.is_available() and "cuda" in cl_args.device:
         device = torch.device(f'{cl_args.device}')
         device_id = ("_" + cl_args.device.rsplit(':',1)[1]) if "0" not in cl_args.device else ""
-    elif ("mps" in cl_args.device) or (torch.backends.mps.is_available()):
-        device = torch.device("mps")
-        settings.method = "ddim" # k_diffusion currently not working on anything other than cuda
+    # testing for mps leads to AttributeError: module 'torch.backends' has no attribute 'mps'
+    # elif ("mps" in cl_args.device) or (torch.backends.mps.is_available()):
+    #     device = torch.device("mps")
+    #     settings.method = "ddim" # k_diffusion currently not working on anything other than cuda
     else:
         # fallback to CPU if we don't recognize the device name given
         device = torch.device("cpu")
